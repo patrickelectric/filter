@@ -1,0 +1,37 @@
+#filter-close-screen {
+  float: right;
+}
+
+#filter-screen {
+  background-color: #fff;
+  border: 1px solid #b4bbcd;
+  padding: 15px 15px 10px;
+  position: fixed;
+  top: 35px;
+  right: 10px;
+  z-index: 99;
+  display: none;
+}
+
+#filter-text {
+  margin: 10px 0 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#filter-save {
+  margin-right: 5px;
+}
+
+#filter-count {
+  float: right;
+  line-height: 30px;
+}
+#filter-count:after {
+  content: " stories filtered.";
+}
+
+._filtered {
+  background: rgba(255, 0, 0, .2);
+  display: none;
+}
