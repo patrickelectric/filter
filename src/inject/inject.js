@@ -48,16 +48,18 @@ chrome.extension.sendRequest({}, function(settings) {
       function removeFilteredWords () {
         var i = 0
         $("._filtered").removeClass("_filtered");
-        $words = ($.cookie("filter_text_ext")||"").split(",")
-        $.each( $words, function (_, w) {
-          var reg = new RegExp( $.trim(w) ,"gi");
-          $(".genericStreamStory").each(function(_, story) {
-            if ( $(story).find(".mainWrapper").text().match(reg) ) {
-              $(story).addClass("_filtered");
-              i++;
-            }
-          })
-        });
+        $words = $.grep( ($.cookie("filter_text_ext")||"").split(","), function(val) { val != "" } );
+        if ($words.length > 0) {
+          $.each( $words, function (_, w) {
+            var reg = new RegExp( $.trim(w) ,"gi");
+            $(".genericStreamStory").each(function(_, story) {
+              if ( $(story).find(".mainWrapper").text().match(reg) ) {
+                $(story).addClass("_filtered");
+                i++;
+              }
+            })
+          });
+        }
         $("#filter-count").html(i);
       }
 
