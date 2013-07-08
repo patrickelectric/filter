@@ -7,7 +7,7 @@
 
 #### :wrench: Install
 
-[From Chrome Store](https://chrome.google.com/webstore/detail/filter/ongmpdiioadbiooegapnhbfglmaacpcd) or [Download .crx File](http://goo.gl/9V55p)
+[From Chrome Store](https://chrome.google.com/webstore/detail/filter/ongmpdiioadbiooegapnhbfglmaacpcd) or clone this repository and load the extension yourself.
 
 #### :point_up: Why?!
 
