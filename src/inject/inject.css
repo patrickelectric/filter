@@ -8,9 +8,10 @@
   padding: 15px 15px 10px;
   position: fixed;
   top: 35px;
-  right: 10px;
+  right: 0;
   z-index: 99;
   display: none;
+  width: 300px;
 }
 
 #filter-text {

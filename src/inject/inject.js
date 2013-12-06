@@ -1,8 +1,8 @@
-chrome.extension.sendRequest({}, function(settings) {
+chrome.extension.sendMessage({}, function(settings) {
   var readyStateCheckInterval = setInterval(function() {
 
     // Start script once loading has been completed
-    if( $("#pagelet_home_stream").length ) {
+    if( $("#stream_pagelet").length ) {
       clearInterval(readyStateCheckInterval);
       console.log("Boom");
       
@@ -18,14 +18,14 @@ chrome.extension.sendRequest({}, function(settings) {
       }
 
       function createControlScreen () {
-        $("#globalContainer").append("<div id=\"filter-screen\"></div>");
-        right = (document.width - $("#content").width())/2;
+        $("#content").append("<div id=\"filter-screen\"></div>");
+        right = $(document).width() - ($("#pageNav").offset().left + $("#pageNav").width()) - 1;
         $screen = $("#filter-screen").css("right", right + "px");
         $screen.append("<a id=\"filter-close-screen\">&times;</a>");
         $("#filter-close-screen").click(function() { $("#filter-screen").toggle(); });
 
         $screen.append("<label>Enter words to filter. Comma separated.</label><br />");
-        $screen.append("<textarea id=\"filter-text\" placeholder=\"Justin Beiber, iCarly\">" + ($.cookie("filter_text_ext")||"") + "</textarea>");
+        $screen.append("<textarea id=\"filter-text\">" + ($.cookie("filter_text_ext")||"") + "</textarea>");
         classes = $("button[type=submit]").attr("class");
         $screen.append("<label id=\"filter-count\"></label>");
         $screen.append("<a id=\"filter-save\" class=\"_42ft _42fu _11b selected _42g-\">Save</a>");
@@ -38,7 +38,7 @@ chrome.extension.sendRequest({}, function(settings) {
         $filter_text = $("#filter-text");
         $save_btn.click( function () {
           $("#filter-status").show().html("Saving..");
-          $.cookie("filter_text_ext", $filter_text.val() );
+          $.cookie("filter_text_ext", $filter_text[0].value );
           $("#filter-status").html("Saved.");
           $("#filter-status").delay(1500).fadeOut();
           removeFilteredWords();
@@ -48,12 +48,12 @@ chrome.extension.sendRequest({}, function(settings) {
       function removeFilteredWords () {
         var i = 0
         $("._filtered").removeClass("_filtered");
-        $words = $.grep( ($.cookie("filter_text_ext")||"").split(","), function(val) { val != "" } );
+        $words = $.grep( ($.cookie("filter_text_ext")||"").split(","), function(val) { return val != "" } );
         if ($words.length > 0) {
           $.each( $words, function (_, w) {
             var reg = new RegExp( $.trim(w) ,"gi");
-            $(".genericStreamStory").each(function(_, story) {
-              if ( $(story).find(".mainWrapper").text().match(reg) ) {
+            $("._5uch").each(function(_, story) {
+              if ( $(story).find(".userContent").text().match(reg) ) {
                 $(story).addClass("_filtered");
                 i++;
               }
@@ -69,7 +69,7 @@ chrome.extension.sendRequest({}, function(settings) {
         }
       }
 
-      $("#home_stream").on("DOMNodeInserted", function() {
+      $("#content").on("DOMNodeInserted", function() {
         if(!window.justRefreshed) {
           console.log("New stories");
           window.justRefreshed = true;
