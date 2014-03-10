@@ -5,7 +5,7 @@ chrome.extension.sendMessage({}, function(settings) {
     if( $("#stream_pagelet").length ) {
       clearInterval(readyStateCheckInterval);
       console.log("Boom");
-      
+
       function createButton () {
         $sample = $("#pageNav #navHome").first();
         classes = $sample.attr("class");
@@ -52,8 +52,8 @@ chrome.extension.sendMessage({}, function(settings) {
         if ($words.length > 0) {
           $.each( $words, function (_, w) {
             var reg = new RegExp( $.trim(w) ,"gi");
-            $("._5uch").each(function(_, story) {
-              if ( $(story).find(".userContent").text().match(reg) ) {
+            $("._5pcb .mbm").each(function(_, story) {
+              if ( $(story).find(".userContentWrapper").text().match(reg) ) {
                 $(story).addClass("_filtered");
                 i++;
               }
