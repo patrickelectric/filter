@@ -5,13 +5,24 @@
 #filter-screen {
   background-color: #fff;
   border: 1px solid #b4bbcd;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
   padding: 15px 15px 10px;
   position: fixed;
-  top: 35px;
+  top: 43px;
   right: 0;
-  z-index: 99;
+  z-index: 302;
   display: none;
   width: 300px;
+}
+
+#filter-screen:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: 20px;
+  border: 11px solid transparent;
+  border-bottom-color: #fff;
 }
 
 #filter-text {
