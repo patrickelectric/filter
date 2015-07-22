@@ -5,6 +5,7 @@ var readyStateCheckInterval = setInterval(function () {
   if (mainStream) {
     clearInterval(readyStateCheckInterval)
 
+    // every 500ms when DOMNodeInserted happen, lets filter out stuff
     document.getElementById('content').addEventListener('DOMNodeInserted', function () {
       if (!window.justRefreshed) {
         window.justRefreshed = true
@@ -16,6 +17,7 @@ var readyStateCheckInterval = setInterval(function () {
       }
     })
 
+    // bind it so when user click on other nav bar items, the filter dialog goes away
     Array.prototype.forEach.call(document.getElementsByClassName('jewelButton'), function(ele) {
       ele.onclick = function bindClick () {
         document.getElementById('filter-close-screen').click()
@@ -33,6 +35,7 @@ var readyStateCheckInterval = setInterval(function () {
     }
   }
 
+  // create a "filter" button in nav bar
   function createButton () {
     var sampleButton = document.querySelector('#blueBarNAXAnchor ._2pdh')
     var sampleButtonClasses = sampleButton.className
@@ -54,6 +57,7 @@ var readyStateCheckInterval = setInterval(function () {
     }
   }
 
+  // create a filter dialog for keyword setting
   function createControlScreen () {
     var filterScreen = document.createElement('div')
     filterScreen.id = 'filter-screen'
@@ -105,6 +109,7 @@ var readyStateCheckInterval = setInterval(function () {
     filterScreen.appendChild(statusLabel)
   }
 
+  // filter out stuff for real
   function removeFilteredWords () {
     var i = 0
 
@@ -125,6 +130,7 @@ var readyStateCheckInterval = setInterval(function () {
       })
     })
 
+    // update how many stories are being filtered out
     document.getElementById('filter-count').innerText = i
   }
 }, 100)
