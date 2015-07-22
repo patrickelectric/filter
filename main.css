@@ -28,7 +28,13 @@
 #filter-text {
   margin: 10px 0 5px;
   width: 100%;
+  border-color: #dcdee3;
+  padding: 7px;
   box-sizing: border-box;
+}
+
+#filter-text:focus {
+  outline: none;
 }
 
 #filter-save {

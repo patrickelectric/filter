@@ -52,7 +52,7 @@ var readyStateCheckInterval = setInterval(function () {
     $screen.append('<label>Enter words to filter. Comma separated.</label><br />')
     $screen.append('<textarea id=\'filter-text\'>' + ($.cookie('filter_text_ext') || '') + '</textarea>')
     $screen.append('<label id=\'filter-count\'></label>')
-    $screen.append('<a id=\'filter-save\' class=\'_42ft _42fu _11b selected _42g-\'>Save</a>')
+    $screen.append('<a id=\'filter-save\' class=\'_42ft _4jy0 _11b _4jy3 _4jy1 selected _51sy\'>Save</a>')
     $screen.append('<label id=\'filter-status\'></label>')
     bindCookieSaving()
   }
