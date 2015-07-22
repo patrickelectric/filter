@@ -1,14 +1,14 @@
 var readyStateCheckInterval = setInterval(function () {
+  var mainStream = document.querySelector('[id^=topnews_main_stream]')
 
   // Start script once loading has been completed
-  if ($('[id^=topnews_main_stream]').length) {
+  if (mainStream) {
     clearInterval(readyStateCheckInterval)
-    console.log('Boom')
 
-    $('#content').on('DOMNodeInserted', function () {
+    document.getElementById('content').addEventListener('DOMNodeInserted', function () {
       if (!window.justRefreshed) {
-        console.log('New stories')
         window.justRefreshed = true
+
         setTimeout(function () {
           window.justRefreshed = false
         }, 500)
@@ -16,8 +16,10 @@ var readyStateCheckInterval = setInterval(function () {
       }
     })
 
-    $('.jewelButton').click(function bindClick () {
-      $('#filter-close-screen').click()
+    Array.prototype.forEach.call(document.getElementsByClassName('jewelButton'), function(ele) {
+      ele.onclick = function bindClick () {
+        document.getElementById('filter-close-screen').click()
+      }
     })
 
     createButton()
@@ -26,64 +28,103 @@ var readyStateCheckInterval = setInterval(function () {
   }
 
   function checkNewElements () {
-    if ($('.hidden_elem').length) {
+    if (document.getElementsByClassName('hidden_elem').length) {
       removeFilteredWords()
     }
   }
 
   function createButton () {
-    var $sample = $('#blueBarNAXAnchor ._2pdh').first()
-    var classes = $sample.attr('class')
-    var link_classes = $sample.find('a').attr('class')
-    var $control = $('<li>').addClass(classes).append('<a>')
-    var $control_btn = $control.find('a').addClass(link_classes).attr('id', 'filter-btn').append('Filter')
-    $sample.after($control)
+    var sampleButton = document.querySelector('#blueBarNAXAnchor ._2pdh')
+    var sampleButtonClasses = sampleButton.className
+    var linkClasses = sampleButton.getElementsByTagName('a')[0].className
+    var control = document.createElement('li')
+    control.className = sampleButtonClasses
+    var controlLink = document.createElement('a')
+    controlLink.className = linkClasses
+    controlLink.id = 'filter-btn'
+    controlLink.innerText = 'Filter'
 
-    $control_btn.click(function () { $('#filter-screen').toggle() })
+    control.appendChild(controlLink)
+
+    sampleButton.parentElement.insertBefore(control, sampleButton.nextSibling)
+
+    controlLink.onclick = function () {
+      var filterScreen = document.getElementById('filter-screen')
+      filterScreen.style.display = filterScreen.style.display === 'block' ? 'none' : 'block'
+    }
   }
 
   function createControlScreen () {
-    $('#blueBarNAXAnchor').append('<div id=\'filter-screen\'></div>')
-    var left = $('#filter-btn').offset().left - 275
-    var $screen = $('#filter-screen').css('left', left + 'px')
-    $screen.append('<a id=\'filter-close-screen\'>&times;</a>')
-    $('#filter-close-screen').click(function () { $('#filter-screen').toggle(false) })
+    var filterScreen = document.createElement('div')
+    filterScreen.id = 'filter-screen'
+    document.getElementById('blueBarNAXAnchor').appendChild(filterScreen)
 
-    $screen.append('<label>Enter words to filter. Comma separated.</label><br />')
-    $screen.append('<textarea id=\'filter-text\'>' + ($.cookie('filter_text_ext') || '') + '</textarea>')
-    $screen.append('<label id=\'filter-count\'></label>')
-    $screen.append('<a id=\'filter-save\' class=\'_42ft _4jy0 _11b _4jy3 _4jy1 selected _51sy\'>Save</a>')
-    $screen.append('<label id=\'filter-status\'></label>')
-    bindCookieSaving()
-  }
+    var left = document.getElementById('filter-btn').getBoundingClientRect().left - 275
+    filterScreen.style.left = left + 'px'
 
-  function bindCookieSaving () {
-    var $save_btn = $('#filter-save')
-    var $filter_text = $('#filter-text')
-    $save_btn.click(function () {
-      $('#filter-status').show().html('Saving..')
-      $.cookie('filter_text_ext', $filter_text[0].value)
-      $('#filter-status').html('Saved.')
-      $('#filter-status').delay(1500).fadeOut()
+    var closeButton = document.createElement('a')
+    closeButton.id = 'filter-close-screen'
+    closeButton.innerHTML = '&times;'
+
+    filterScreen.appendChild(closeButton)
+    closeButton.onclick = function () { filterScreen.style.display = 'none' }
+
+    var textLabel = document.createElement('label')
+    textLabel.innerHTML = 'Enter words to filter. Comma separated.'
+    filterScreen.appendChild(textLabel)
+
+    var textarea = document.createElement('textarea')
+    textarea.id = 'filter-text'
+    textarea.value = ($.cookie('filter_text_ext') || '')
+    filterScreen.appendChild(textarea)
+
+    var countLabel = document.createElement('label')
+    countLabel.id = 'filter-count'
+    filterScreen.appendChild(countLabel)
+
+    var saveButton = document.createElement('a')
+    saveButton.id = 'filter-save'
+    saveButton.className = '_42ft _4jy0 _11b _4jy3 _4jy1 selected _51sy'
+    saveButton.innerText = 'Save'
+    filterScreen.appendChild(saveButton)
+
+    saveButton.onclick = function () {
+      $.cookie('filter_text_ext', textarea.value)
+      statusLabel.innerText = 'Saved.'
+      statusLabel.style.display = 'inline'
+
+      setTimeout(function removeStatus (argument) {
+        statusLabel.style.display = 'none'
+      }, 1500)
+
       removeFilteredWords()
-    })
+    }
+
+    var statusLabel = document.createElement('label')
+    statusLabel.id = 'filter-status'
+    filterScreen.appendChild(statusLabel)
   }
 
   function removeFilteredWords () {
     var i = 0
-    $('._filtered').removeClass('_filtered')
-    var $words = $.grep(($.cookie('filter_text_ext') || '').split(','), function (val) { return val !== '' })
-    if ($words.length > 0) {
-      $.each($words, function (_, w) {
-        var reg = new RegExp($.trim(w), 'gi')
-        $('[id^=hyperfeed_story]').each(function (_, story) {
-          if ($(story).find('.userContentWrapper').text().match(reg)) {
-            $(story).addClass('_filtered')
-            i++
-          }
-        })
+
+    Array.prototype.forEach.call(document.getElementsByClassName('_filtered'), function(ele) {
+      ele.classList.remove("_filtered")
+    })
+
+    var filterWords = ($.cookie('filter_text_ext') || '').split(',').filter(function (val) { return val !== '' })
+    filterWords.forEach(function (w) {
+      var reg = new RegExp(w.replace(/^\s+|\s+$/g, ''), 'gi')
+      var stories = document.querySelectorAll('[id^=hyperfeed_story]')
+
+      Array.prototype.forEach.call(stories, function(story) {
+        if (story.innerText.match(reg)) {
+          story.classList.add('_filtered')
+          i++
+        }
       })
-    }
-    $('#filter-count').html(i)
+    })
+
+    document.getElementById('filter-count').innerText = i
   }
 }, 100)
