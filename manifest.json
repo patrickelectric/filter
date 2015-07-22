@@ -4,31 +4,12 @@
   "manifest_version": 2,
   "description": "Hide stuff you don't want to see.",
   "homepage_url": "http://muan.co",
-  "background": {
-    "page": "src/bg/background.html",
-    "persistent": true
-  },
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "content_scripts": [
     {
-      "matches": [
-        "https://www.facebook.com/*",
-        "http://www.facebook.com/*"
-      ],
-      "css": [
-        "src/inject/inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "https://www.facebook.com/*",
-        "http://www.facebook.com/*"
-      ],
-      "js": [
-        "js/jquery.js",
-        "js/cookie.js",
-        "src/inject/inject.js"
-      ]
+      "matches": ["https://www.facebook.com/*", "http://www.facebook.com/*"],
+      "css": ["main.css"],
+      "js": ["js/jquery.js", "js/cookie.js", "main.js"]
     }
   ]
 }
