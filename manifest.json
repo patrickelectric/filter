@@ -9,7 +9,7 @@
     {
       "matches": ["https://www.facebook.com/*", "http://www.facebook.com/*"],
       "css": ["main.css"],
-      "js": ["js/jquery.js", "js/cookie.js", "main.js"]
+      "js": ["main.js"]
     }
   ]
 }
