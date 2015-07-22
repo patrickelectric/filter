@@ -83,7 +83,7 @@ function createControlScreen () {
 
   var textarea = document.createElement('textarea')
   textarea.id = 'filter-text'
-  textarea.value = ($.cookie('filter_text_ext') || '')
+  textarea.value = (localStorage.getItem('filter_text_ext') || '')
   filterScreen.appendChild(textarea)
 
   var countLabel = document.createElement('label')
@@ -97,7 +97,7 @@ function createControlScreen () {
   filterScreen.appendChild(saveButton)
 
   saveButton.onclick = function () {
-    $.cookie('filter_text_ext', textarea.value)
+    localStorage.setItem('filter_text_ext', textarea.value)
     statusLabel.innerText = 'Saved.'
     statusLabel.style.display = 'inline'
 
@@ -121,7 +121,7 @@ function removeFilteredWords () {
     ele.classList.remove("_filtered")
   })
 
-  var filterWords = ($.cookie('filter_text_ext') || '').split(',').filter(function (val) { return val !== '' })
+  var filterWords = (localStorage.getItem('filter_text_ext') || '').split(',').filter(function (val) { return val !== '' })
   filterWords.forEach(function (w) {
     var reg = new RegExp(w.replace(/^\s+|\s+$/g, ''), 'gi')
     var stories = document.querySelectorAll('[id^=hyperfeed_story]')
