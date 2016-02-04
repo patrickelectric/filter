@@ -39,9 +39,22 @@ function checkNewElements () {
   }
 }
 
+// return the name of the facebook bluebar if exist
+function blueBarName()
+{
+  var bluebarv = ["blueBarDOMInspector", "blueBarNAXAnchor"]
+  var sampleButton
+  for (var bluebar of bluebarv){
+    if(document.querySelector('#'+bluebar +' ._2pdh')!=null) 
+      return bluebar
+  }
+}
+
 // create a "filter" button in nav bar
 function createButton () {
-  var sampleButton = document.querySelector('#blueBarNAXAnchor ._2pdh')
+  var sampleButton = document.querySelector('#'+blueBarName() +' ._2pdh')
+  
+  //var sampleButton = document.querySelector('#blueBarNAXAnchor ._2pdh')
   var sampleButtonClasses = sampleButton.className
   var linkClasses = sampleButton.getElementsByTagName('a')[0].className
   var control = document.createElement('li')
@@ -65,7 +78,7 @@ function createButton () {
 function createControlScreen () {
   var filterScreen = document.createElement('div')
   filterScreen.id = 'filter-screen'
-  document.getElementById('blueBarNAXAnchor').appendChild(filterScreen)
+  document.getElementById(blueBarName()).appendChild(filterScreen)
 
   var left = document.getElementById('filter-btn').getBoundingClientRect().left - 275
   filterScreen.style.left = left + 'px'
